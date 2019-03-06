@@ -24,12 +24,12 @@ def make_sets():
             image = cv2.imread(item, 0)
             training_data.append(image)
             training_labels.append(emotions.index(emotion))
-
+        
         for item in prediction:
             item = cv2.imread(item, 0)
             prediction_data.append(image)
             prediction_labels.append(emotions.index(emotion))
-
+        
     return training_data, training_labels, prediction_data, prediction_labels
 
 
@@ -56,4 +56,4 @@ if __name__ == '__main__':
     print("Processed ", correct, " data correctly")
     print("Got ", percentage, " accuracy")
 
-    fisher_face.write('models/emotion_classifier_model.xml')
+    fisher_face.write('models/emotion_classifier_model_male_02.xml')

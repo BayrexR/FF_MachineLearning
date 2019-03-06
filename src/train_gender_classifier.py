@@ -57,4 +57,4 @@ if __name__ == '__main__':
     print("Processed ", correct, " data correctly")
     print("Got ", percentage, " accuracy")
 
-    fisher_face.write('models/gender_classifier_model.xml')
+    fisher_face.write('models/gender_classifier_model_02.xml')
