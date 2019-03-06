@@ -42,8 +42,7 @@ def analyze_picture(model_emotion, model_gender, path, file_name, model):
 def process_images(models):
 
     for model in models:
-        #images = glob.glob('../data/sample/*.jpg')        
-        images = [os.path.basename(x) for x in glob.glob('../data/sample/*.jpg')]
+        images = [os.path.basename(x) for x in glob.glob('../data/testing/*.jpg')]
         
         # Load model
         fisher_face_emotion = cv2.face.FisherFaceRecognizer_create()
@@ -57,7 +56,7 @@ def process_images(models):
         for file_name in images:
             #print(image)
             #print(model)
-            analyze_picture(fisher_face_emotion, fisher_face_gender, '../data/sample/', file_name, model)
+            analyze_picture(fisher_face_emotion, fisher_face_gender, '../data/testing/', file_name, model)
 
 if __name__ == '__main__':
     emotions = ["afraid", "angry", "disgusted", "happy", "neutral", "sad", "surprised"]
