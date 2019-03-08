@@ -46,20 +46,49 @@ def process_images(models):
         
         # Load model
         fisher_face_emotion = cv2.face.FisherFaceRecognizer_create()
-        fisher_face_emotion.read('models/emotion_classifier_model_all_%s.xml' % model)
+        fisher_face_emotion.read('models/emotion_classifier_model_%s%s.xml' % (model[0], model[1]))
 
         fisher_face_gender = cv2.face.FisherFaceRecognizer_create()
-        fisher_face_gender.read('models/gender_classifier_model_%s.xml' % model)
-
+        #fisher_face_gender.read('models/gender_classifier_model_%s.xml' % model[1])
+        fisher_face_gender.read('models/gender_classifier_model.xml')
+        
         print(model)
         
         for file_name in images:
             #print(image)
             #print(model)
-            analyze_picture(fisher_face_emotion, fisher_face_gender, '../data/testing/', file_name, model)
+            analyze_picture(fisher_face_emotion, fisher_face_gender, '../data/testing/', file_name, model[0]+model[1])
 
 if __name__ == '__main__':
     emotions = ["afraid", "angry", "disgusted", "happy", "neutral", "sad", "surprised"]
-    models = ["02", "05", "10", "35", "70"]
-
+    models = [  ["all_multiple_", "02"],
+                ["all_multiple_", "05"],
+                ["all_multiple_", "10"],
+                ["all_multiple_", "35"],
+                ["all_multiple_", "70"],
+                ["all_straight_", "02"],
+                ["all_straight_", "05"],
+                ["all_straight_", "10"],
+                ["all_straight_", "35"],
+                ["all_straight_", "70"],
+                ["female_multiple_", "02"],
+                ["female_multiple_", "05"],
+                ["female_multiple_", "10"],
+                ["female_multiple_", "35"],
+                ["female_multiple_", "70"],
+                ["female_straight_", "02"],
+                ["female_straight_", "05"],
+                ["female_straight_", "10"],
+                ["female_straight_", "35"],
+                ["female_straight_", "70"],                                
+                ["male_multiple_", "02"],
+                ["male_multiple_", "05"],
+                ["male_multiple_", "10"],
+                ["male_multiple_", "35"],
+                ["male_multiple_", "70"],
+                ["male_straight_", "02"],
+                ["male_straight_", "05"],
+                ["male_straight_", "10"],
+                ["male_straight_", "35"],
+                ["male_straight_", "70"]]                                
     process_images(models)
