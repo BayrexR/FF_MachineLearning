@@ -1,3 +1,4 @@
+#import dependences
 import cv2
 import glob
 import numpy as np
@@ -6,7 +7,7 @@ import csv
 
 from face_detection import find_faces
 
-
+#detect faces and recognize the gender and emotion 
 def analyze_picture(model_emotion, model_gender, path, file_name, model):
 
     result_gender = ''
@@ -38,7 +39,7 @@ def analyze_picture(model_emotion, model_gender, path, file_name, model):
 
     cv2.imwrite("../data/results/%s/%s" % (model, file_name), image)
 
-
+#detect faces and recognize emotion
 def analyze_picture_emotion(model_emotion, path, file_name, model):
 
     result_emotion = ''
@@ -63,6 +64,35 @@ def analyze_picture_emotion(model_emotion, path, file_name, model):
 
     cv2.imwrite("../data/results/%s/%s" % (model, file_name), image)
 
+#detect faces and recognize gender
+def analyze_picture_gender(model_gender, path, file_name, model):
+    result_gender = ''
+    result_faces = 0
+
+    path += file_name
+    #print(path)
+    image = cv2.imread(path, 1)
+    for normalized_face, (x, y, w, h) in find_faces(image):
+        result_faces += 1
+        gender_prediction = model_gender.predict(normalized_face)
+        if (gender_prediction[0] == 0):
+            cv2.rectangle(image, (x,y), (x+w, y+h), (0,0,255), 2)
+        else:
+            cv2.rectangle(image, (x,y), (x+w, y+h), (255,0,0), 2)
+
+        result_gender = gender_prediction[0]
+
+        with open('../data/results/results.csv', mode='a', newline='') as result_file:  
+            results_writer = csv.writer(result_file, delimiter=',')
+            results_writer.writerow([model, file_name, result_faces, result_gender])
+
+    if not os.path.exists('../data/results/%s' % model):
+        os.makedirs('../data/results/%s' % model)
+
+    cv2.imwrite("../data/results/%s/%s" % (model, file_name), image)
+
+
+#test all the models 
 def process_images(models):
 
     for model in models:
@@ -84,7 +114,7 @@ def process_images(models):
             if model[1] == 1:
                 analyze_picture_emotion(fisher_face_emotion, '../data/testing/', file_name, model[0])    
             else:
-                analyze_picture(fisher_face_emotion, fisher_face_gender, '../data/testing/', file_name, model[0])
+                analyze_picture_gender(fisher_face_emotion, '../data/testing/', file_name, model[0])
 
 if __name__ == '__main__':
     emotions = ["afraid", "angry", "disgusted", "happy", "neutral", "sad", "surprised"]
@@ -117,5 +147,15 @@ if __name__ == '__main__':
                 ["male_straight_05", 1],
                 ["male_straight_10", 1],
                 ["male_straight_35", 1],
-                ["male_straight_70", 1]]                                
+                ["male_straight_70", 1],
+                ["multiple_02",2],
+                ["multiple_05",2],
+                ["multiple_10",2],
+                ["multiple_35",2],
+                ["multiple_70",2],
+                ["straight_02",2],
+                ["straight_05",2],
+                ["straight_10",2],
+                ["straight_35",2],
+                ["straight_70",2]]                                
     process_images(models)
