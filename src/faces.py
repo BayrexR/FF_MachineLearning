@@ -57,7 +57,8 @@ def analyze_picture_emotion(model_emotion, path, file_name, model):
 
         with open('../data/results/results.csv', mode='a', newline='') as result_file:  
             results_writer = csv.writer(result_file, delimiter=',')
-            results_writer.writerow([model, file_name, result_faces, result_emotion])
+            #results_writer.writerow(['emotion', model, file_name, result_faces, result_emotion])
+            results_writer.writerow(['emotion', model, file_name, file_name[:1], file_name[2:4], result_emotion])
 
     if not os.path.exists('../data/results/%s' % model):
         os.makedirs('../data/results/%s' % model)
@@ -85,8 +86,9 @@ def analyze_picture_gender(model_gender, path, file_name, model):
 
         with open('../data/results/results.csv', mode='a', newline='') as result_file:  
             results_writer = csv.writer(result_file, delimiter=',')
-            results_writer.writerow([model, file_name, result_faces, result_gender])
-
+            #results_writer.writerow(['gender', model, file_name, file_name[:1], file_name[2:4], file_name[4:6], result_gender])
+            results_writer.writerow(['gender', model, file_name, file_name[:1], file_name[2:4], result_gender])
+            #F_AA00.jpg
     if not os.path.exists('../data/results/%s' % model):
         os.makedirs('../data/results/%s' % model)
 
@@ -159,6 +161,10 @@ if __name__ == '__main__':
                 ["straight_05",2],
                 ["straight_10",2],
                 ["straight_35",2],
-                ["straight_70",2]]                                
+                ["straight_70",2],
+                ["celeb_beyonce_carrey",2],
+                ["celeb_taraji_cooper",2],
+                ["celeb_phoebe_ross",2]                                
+                ]                                
     
     process_images(models)
