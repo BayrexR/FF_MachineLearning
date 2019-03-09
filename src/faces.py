@@ -78,10 +78,10 @@ def analyze_picture_gender(model_gender, path, file_name, model):
         gender_prediction = model_gender.predict(normalized_face)
         if (gender_prediction[0] == 0):
             cv2.rectangle(image, (x,y), (x+w, y+h), (0,0,255), 2)
-            result_gender = 'male'
+            result_gender = 'female'
         else:
             cv2.rectangle(image, (x,y), (x+w, y+h), (255,0,0), 2)
-            result_gender = 'female'        
+            result_gender = 'male'        
 
         with open('../data/results/results.csv', mode='a', newline='') as result_file:  
             results_writer = csv.writer(result_file, delimiter=',')
