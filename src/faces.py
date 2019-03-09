@@ -66,6 +66,7 @@ def analyze_picture_emotion(model_emotion, path, file_name, model):
 
 #detect faces and recognize gender
 def analyze_picture_gender(model_gender, path, file_name, model):
+
     result_gender = ''
     result_faces = 0
 
@@ -77,10 +78,10 @@ def analyze_picture_gender(model_gender, path, file_name, model):
         gender_prediction = model_gender.predict(normalized_face)
         if (gender_prediction[0] == 0):
             cv2.rectangle(image, (x,y), (x+w, y+h), (0,0,255), 2)
+            result_gender = 'male'
         else:
             cv2.rectangle(image, (x,y), (x+w, y+h), (255,0,0), 2)
-
-        result_gender = gender_prediction[0]
+            result_gender = 'female'        
 
         with open('../data/results/results.csv', mode='a', newline='') as result_file:  
             results_writer = csv.writer(result_file, delimiter=',')
@@ -102,10 +103,11 @@ def process_images(models):
         if model[1] == 1:        
             fisher_face_emotion = cv2.face.FisherFaceRecognizer_create()
             fisher_face_emotion.read('models/emotion_classifier_model_%s.xml' % (model[0]))
+            
         else:
             fisher_face_gender = cv2.face.FisherFaceRecognizer_create()
             fisher_face_gender.read('models/gender_classifier_model_%s.xml' % model[0])        
-        
+            
         print(model)
         
         for file_name in images:
@@ -114,7 +116,7 @@ def process_images(models):
             if model[1] == 1:
                 analyze_picture_emotion(fisher_face_emotion, '../data/testing/', file_name, model[0])    
             else:
-                analyze_picture_gender(fisher_face_emotion, '../data/testing/', file_name, model[0])
+                analyze_picture_gender(fisher_face_gender, '../data/testing/', file_name, model[0])
 
 if __name__ == '__main__':
     emotions = ["afraid", "angry", "disgusted", "happy", "neutral", "sad", "surprised"]
@@ -137,7 +139,7 @@ if __name__ == '__main__':
                 ["female_straight_05", 1],
                 ["female_straight_10", 1],
                 ["female_straight_35", 1],
-                ["female_straight_70", 1],                                
+                ["female_straight_70", 1],
                 ["male_multiple_02", 1],
                 ["male_multiple_05", 1],
                 ["male_multiple_10", 1],
@@ -158,4 +160,5 @@ if __name__ == '__main__':
                 ["straight_10",2],
                 ["straight_35",2],
                 ["straight_70",2]]                                
+    
     process_images(models)
